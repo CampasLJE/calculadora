@@ -28,4 +28,10 @@ jobs:
           pip install -r requirements.txt
 
       - name: Ejecutar pruebas
-        run: pytest
+        run: bash scripts/run_tests.sh
+
+      - name: Desplegar en Render
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        env:
+          RENDER_WEBHOOK_URL: ${{ secrets.RENDER_WEBHOOK_URL }}
+        run: bash scripts/deploy.sh
